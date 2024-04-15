@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int N=155;
+struct edge{
+	int u,v;
+};
+int dfn[N];
+int low[N];
+int f[N];
+vector <int> e[N];
+int id;
+vector <edge> a;
+void tarjan(int x){
+	dfn[x]=low[x]=++id;
+	for(int i=0;i<e[x].size();i++){
+		int y=e[x][i];
+		if(dfn[y]&&y!=f[x]){
+			low[x]=min(low[x],dfn[y]);
+			continue;
+		}
+		if(!dfn[y]){
+			f[y]=x;
+			tarjan(y);
+			low[x]=min(low[y],low[x]);
+			if(low[y]>dfn[x]){
+				a.push_back({x,y});
+			}
+		}
+	}
+}
+bool cmp(edge a,edge b){
+	if(a.u!=b.u){
+		return a.u<b.u;
+	}
+	else{
+		return a.v<b.v;
+	}
+}
+int main(){
+	int n,m;
+	cin>>n>>m;
+	for(int i=0;i<m;i++){
+		int u,v;
+		cin>>u>>v;
+		e[u].push_back(v);
+		e[v].push_back(u);
+	}
+	for(int i=1;i<=n;i++){
+		if(!dfn[i]){
+			tarjan(i);
+		}
+	}
+	sort(a.begin(),a.end(),cmp);
+	for(int i=0;i<a.size();i++){
+		cout<<a[i].u<<" "<<a[i].v<<endl;
+	}
+	return 0;
+}
