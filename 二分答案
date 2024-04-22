@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll max(ll a,ll b){
+	return a>b?a:b;
+}
+int main(){
+	ll n,m;
+	cin>>n>>m;
+	vector <ll> a(n);
+	ll maxn=0;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+		maxn=max(maxn,a[i]);
+	}
+	ll l=0;
+	ll r=maxn;
+	while(l<=r){
+		ll ans=0;
+		ll mid=(l+r)>>1;
+		for(int i=0;i<n;i++){
+			ans+=max(a[i]-mid,0);
+		}
+		if(ans<m){
+			r=mid-1;
+		}
+		else{
+			l=mid+1;
+		}
+	}
+	cout<<l-1;
+	return 0;
+}
